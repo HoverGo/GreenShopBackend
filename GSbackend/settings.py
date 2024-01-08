@@ -76,7 +76,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://greenshopbackend-production-e407.up.railway.app",
+    "https://greenshopbackend.up.railway.app",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://greenshopbackend.up.railway.app",
 ]
 
 ROOT_URLCONF = "GSbackend.urls"
