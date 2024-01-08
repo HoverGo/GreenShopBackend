@@ -84,7 +84,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
         ],
     )
     password = models.CharField(
-        max_length=25,
+        max_length=250,
         validators=[
             RegexValidator(
                 regex=r"^[A-Za-z\d!@#$%^&*()_+]+$",
