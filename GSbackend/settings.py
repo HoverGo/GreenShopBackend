@@ -161,7 +161,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
-STATIC_ROOT = "/var/www/example.com/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles/"
 
 AUTH_USER_MODEL = "shop.Customer"
 
