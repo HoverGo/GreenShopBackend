@@ -25,7 +25,10 @@ SECRET_KEY = "django-insecure-18!4ua=6*k!^tdi-d!9dy5t)!=7vzq9_rili%#xfj+h_y=)(k^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["greenshopbackend-production-e407.up.railway.app"]
+ALLOWED_HOSTS = [
+    "greenshopbackend-production-e407.up.railway.app",
+    "your-app-name.herokuapp.com",
+]
 
 
 # Application definition
@@ -66,7 +69,7 @@ REST_FRAMEWORK = {
     "NON_FIELD_ERRORS_KEY": "error",
 }
 
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
