@@ -919,7 +919,7 @@ class FavouritesGetViews(APIView):
             "salePrice": data["salePrice"],
             "discount": data["discount"],
             "discountPercentage": data["discountPercentage"],
-            "mainImg": data["mainImg"].url,
+            "mainImg": data["mainImg"],
         }
         return dataOutput
 
