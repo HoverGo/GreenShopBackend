@@ -242,7 +242,7 @@ class CartView(RetrieveUpdateDestroyAPIView):
                 "name": ProductSerializer(output.product).data.get("name"),
                 "price": ProductSerializer(output.product).data.get("salePrice"),
                 "quantity": output.quantity,
-                "mainImg": ProductSerializer(output.product).data.get("mainImg").url,
+                "mainImg": ProductSerializer(output.product).data.get("mainImg"),
                 "totalPrice": "${:.2f}".format(
                     output.quantity * output.product.salePrice
                 ),
