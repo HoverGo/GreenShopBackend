@@ -206,23 +206,46 @@ class OrderView(APIView):
 
     def get(self, request):
         # Получение списка заказов и их преобразование в json
-        output = [
-            {
-                "id": output.id,
-                "customer": CustomerSerializer(output.customer).data,
-                "date": output.date,
-                "isCompleted": output.isCompleted,
-            }
-            for output in Order.objects.all()
-        ]
-        return Response(output)
+        customer = request.user
+        orders = Order.objects.filter(customer=customer, isCompleted=True)[::-1][:10]
 
-    def post(self, request):
-        # Создание нового заказа
-        serializer = OrderSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
+        data = []
+
+        for order in orders:
+            if order.totalPrice == 0:
+                continue
+            orderData = {
+                "id": order.id,
+                "subtotalPrice": "${:.2f}".format(order.subtotalPrice),
+                "shippingPrice": "${:.2f}".format(order.shippingPrice),
+                "totalPrice": "${:.2f}".format(order.totalPrice),
+                "product": [],
+            }
+            for orderItem in OrderItem.objects.filter(order=order):
+                orderData["product"].append(
+                    {
+                        "id": orderItem.id,
+                        "name": orderItem.product.name,
+                        "sku": orderItem.product.sku,
+                        "salePrice": orderItem.product.salePrice,
+                        "quantity": orderItem.quantity,
+                        "totalPrice": "${:.2f}".format(
+                            orderItem.quantity * orderItem.product.salePrice
+                        ),
+                        "mainImg": orderItem.product.mainImg.url,
+                        "size": SizeSerializer(orderItem.size).data,
+                    }
+                )
+            data.append(orderData)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    # def post(self, request):
+    #     # Создание нового заказа
+    #     serializer = OrderSerializer(data=request.data)
+    #     if serializer.is_valid(raise_exception=True):
+    #         serializer.save()
+    #         return Response(serializer.data)
 
 
 class CartView(RetrieveUpdateDestroyAPIView):
@@ -293,6 +316,12 @@ class OrderItemView(APIView):
         customer = request.user
         product = Product.objects.get(id=id)
         order = createOrder(customer)
+
+        if OrderItem.objects.filter(order=order).count() >= 50:
+            return Response(
+                {"error": "The order already has 100 or more items"},
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
 
         data = {
             "product": product.pk,
@@ -746,8 +775,6 @@ class TransactionViews(APIView):
             order = Order.objects.get(isCompleted=False, customer=customer)
             order.isCompleted = True
             order.save()
-
-            Order.objects.create(isCompleted=False, customer=customer)
 
         except:
             return Response(
