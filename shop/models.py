@@ -97,7 +97,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
     profileImg = models.ImageField(blank=True, null=True, upload_to=upload_to)
 
     is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
 
     USERNAME_FIELD = "username"
     REQUIRED_FIELDS = ["email"]
