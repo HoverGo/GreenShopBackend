@@ -10,6 +10,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.http import Http404
 from django.db import transaction
+from django.shortcuts import redirect
 
 from .utils import Util
 
@@ -582,6 +583,10 @@ class VerifyEmail(APIView):
             if not customer.is_active:
                 customer.is_active = True
                 customer.save()
+                external_url = "https://greenshopfrontend-production.up.railway.app/"
+                return redirect(external_url)
+                # external_url = "https://www.example.com/your/success/page/"
+                # return RedirectView.as_view(url=external_url, permanent=False)(request)
             return Response(
                 {"email": "Successfully activated"}, status=status.HTTP_200_OK
             )
