@@ -225,7 +225,7 @@ class OrderView(APIView):
             for orderItem in OrderItem.objects.filter(order=order):
                 orderData["product"].append(
                     {
-                        "id": orderItem.id,
+                        "id": orderItem.product.id,
                         "name": orderItem.product.name,
                         "sku": orderItem.product.sku,
                         "salePrice": orderItem.product.salePrice,
