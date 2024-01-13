@@ -794,8 +794,6 @@ class TransactionViews(APIView):
 
         try:
             order = Order.objects.get(isCompleted=False, customer=customer)
-            order.isCompleted = True
-            order.save()
         except:
             return Response(
                 {"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND
@@ -812,6 +810,8 @@ class TransactionViews(APIView):
             serializer = TransactionSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save(shippingAddress=shippingAddress, order=order)
+            order.isCompleted = True
+            order.save()
 
             transaction = Transaction.objects.get(
                 shippingAddress=shippingAddress, order=order
