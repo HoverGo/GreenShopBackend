@@ -144,6 +144,8 @@ class EmailChangeRequestSerializer(serializers.Serializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
     class Meta:
         model = Transaction
         fields = "__all__"
