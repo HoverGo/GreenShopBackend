@@ -214,3 +214,6 @@ EMAIL_HOST_PASSWORD = "cmrmwcynrwtirkhz"
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = "HoverGovi@yandex.ru"
+
+
+# AUTHENTICATION_FAILURE = "Ваше сообщение об ошибке для неактивированного аккаунта."

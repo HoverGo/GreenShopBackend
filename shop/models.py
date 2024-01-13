@@ -111,7 +111,7 @@ class Customer(AbstractBaseUser, PermissionsMixin):
 class EmailChangeRequest(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     newEmail = models.EmailField()
-    confirmationKey = models.CharField(max_length=40)
+    confirmationKey = models.CharField(max_length=250)
     isConfirmed = models.BooleanField(default=False)
 
 
