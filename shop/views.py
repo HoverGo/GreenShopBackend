@@ -796,7 +796,6 @@ class TransactionViews(APIView):
             order = Order.objects.get(isCompleted=False, customer=customer)
             order.isCompleted = True
             order.save()
-
         except:
             return Response(
                 {"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND
@@ -810,39 +809,42 @@ class TransactionViews(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         else:
-            serializer = TransactionSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save(shippingAddress=shippingAddress, order=order)
+            try:
+                serializer = TransactionSerializer(data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save(shippingAddress=shippingAddress, order=order)
 
-            transaction = Transaction.objects.get(
-                shippingAddress=shippingAddress, order=order
-            )
+                transaction = Transaction.objects.get(
+                    shippingAddress=shippingAddress, order=order
+                )
 
-            orderData = {
-                "id": order.id,
-                "date": transaction.date.strftime("%d %b, %Y"),
-                "totalPrice": "${:.2f}".format(order.totalPrice),
-                "shippingPrice": "${:.2f}".format(order.shippingPrice),
-                "paymentMethod": transaction.paymentMethod.name,
-            }
-
-            orderItemData = [
-                {
-                    "id": orderItem.product.id,
-                    "name": orderItem.product.name,
-                    "mainImg": orderItem.product.mainImg,
-                    "sku": orderItem.product.sku,
-                    "quantity": orderItem.quantity,
-                    "subtotal": "${:.2f}".format(
-                        orderItem.quantity * orderItem.product.salePrice
-                    ),
+                orderData = {
+                    "id": order.id,
+                    "date": transaction.date.strftime("%d %b, %Y"),
+                    "totalPrice": "${:.2f}".format(order.totalPrice),
+                    "shippingPrice": "${:.2f}".format(order.shippingPrice),
+                    "paymentMethod": transaction.paymentMethod.name,
                 }
-                for orderItem in OrderItem.objects.filter(order=order)
-            ]
 
-            data = {"orderData": orderData, "orderItemData": orderItemData}
+                orderItemData = [
+                    {
+                        "id": orderItem.product.id,
+                        "name": orderItem.product.name,
+                        "mainImg": orderItem.product.mainImg,
+                        "sku": orderItem.product.sku,
+                        "quantity": orderItem.quantity,
+                        "subtotal": "${:.2f}".format(
+                            orderItem.quantity * orderItem.product.salePrice
+                        ),
+                    }
+                    for orderItem in OrderItem.objects.filter(order=order)
+                ]
 
-            return Response(data, status=status.HTTP_200_OK)
+                data = {"orderData": orderData, "orderItemData": orderItemData}
+
+                return Response(data, status=status.HTTP_200_OK)
+            except:
+                return Response({"error": "error"})
 
 
 class ReviewViews(APIView):
