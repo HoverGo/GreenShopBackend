@@ -830,7 +830,7 @@ class TransactionViews(APIView):
                     {
                         "id": orderItem.product.id,
                         "name": orderItem.product.name,
-                        "mainImg": orderItem.product.mainImg,
+                        "mainImg": orderItem.product.mainImg.url,
                         "sku": orderItem.product.sku,
                         "quantity": orderItem.quantity,
                         "subtotal": "${:.2f}".format(
