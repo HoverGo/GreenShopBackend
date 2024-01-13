@@ -664,6 +664,19 @@ class CustomerEmailChangeRequestView(APIView):
         customer = request.user
         token = RefreshToken.for_user(customer).access_token
 
+        if newEmail == customer.email:
+            return Response(
+                {"error": "This mail is already in use"},
+                status=status.HTTP_406_NOT_ACCEPTABLE,
+            )
+
+        customerEmailChangeRequest = EmailChangeRequest.objects.filter(
+            customer=customer, isConfirmed=False
+        )
+
+        for changeRequest in customerEmailChangeRequest:
+            changeRequest.delete()
+
         emailChangeRequest = EmailChangeRequest.objects.create(
             customer=customer,
             newEmail=newEmail,
@@ -718,10 +731,13 @@ class CustomerConfirmEmailChangeView(APIView):
         customer.save()
         emailChangeRequest.isConfirmed = True
         emailChangeRequest.save()
-        return Response(
-            {"message": "Email change confirmed successfully."},
-            status=status.HTTP_200_OK,
-        )
+
+        external_url = "https://greenshopfrontend-production.up.railway.app/account/"
+        return redirect(external_url)
+        # return Response(
+        #     {"message": "Email change confirmed successfully."},
+        #     status=status.HTTP_200_OK,
+        # )
 
 
 # class CustomerRetrieveUpdateView(RetrieveUpdateAPIView):
