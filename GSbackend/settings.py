@@ -112,13 +112,14 @@ WSGI_APPLICATION = "GSbackend.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "railway",
+        "NAME": "greenshop",
         "USER": "postgres",
-        "PASSWORD": "fadbc6*g**d*Gg53e-FAE622FDD-BAFd",
-        "HOST": "viaduct.proxy.rlwy.net",
-        "PORT": "52922",
+        "PASSWORD": "postgres",
+        "HOST": "gsdb",
+        "PORT": "5432",
     }
 }
+
 
 
 # Password validation
