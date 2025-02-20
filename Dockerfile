@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE 8000
 RUN python manage.py migrate
-CMD ["gunicorn", "--bind", "--workers", "3", "GSbackend.asgi:application"]
+CMD ["gunicorn", "--bind", "--workers", "3", "GSbackend.wsgi:application"]
