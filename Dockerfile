@@ -11,7 +11,7 @@ RUN pip install -r requirements.txt
 COPY . .
 
 EXPOSE 8000
-RUN python manage.py migrate
+
 CMD ["gunicorn", "--bind", "--workers", "3", "GSbackend.wsgi:application"]
 
 FROM nginx:alpine
