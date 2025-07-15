@@ -241,13 +241,6 @@ class OrderView(APIView):
 
         return Response(data, status=status.HTTP_200_OK)
 
-    # def post(self, request):
-    #     # Создание нового заказа
-    #     serializer = OrderSerializer(data=request.data)
-    #     if serializer.is_valid(raise_exception=True):
-    #         serializer.save()
-    #         return Response(serializer.data)
-
 
 class CartView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
@@ -600,16 +593,6 @@ class VerifyEmail(APIView):
             )
 
 
-# class LoginView(APIView):
-#     permission_classes = (AllowAny,)
-
-#     def post(self, request):
-#         serializer = LoginSerializer(data=request.data)
-
-#         if serializer.is_valid(raise_exception=True):
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 class CustomerChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -734,30 +717,7 @@ class CustomerConfirmEmailChangeView(APIView):
 
         external_url = "https://greenshopfrontend-production.up.railway.app/account/"
         return redirect(external_url)
-        # return Response(
-        #     {"message": "Email change confirmed successfully."},
-        #     status=status.HTTP_200_OK,
-        # )
-
-
-# class CustomerRetrieveUpdateView(RetrieveUpdateAPIView):
-#     permission_classes = [IsAuthenticated]
-
-#     def retrieve(self, request, *args, **kwargs):
-#         serializer = CustomerEditSerializer(request.user)
-
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
-#     def update(self, request, *args, **kwargs):
-#         # Обновление данных о текущем пользователе
-#         serializer = CustomerEditSerializer(
-#             request.user, data=request.data, partial=True
-#         )
-
-#         if serializer.is_valid(raise_exception=True):
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-
+        
 
 class TransactionViews(APIView):
     permission_classes = [IsAuthenticated]
