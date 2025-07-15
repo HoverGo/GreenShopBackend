@@ -85,58 +85,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return Customer.objects.create_user(**validated_data)
 
 
-# class LoginSerializer(serializers.Serializer):
-#     username = serializers.CharField(max_length=255)
-#     password = serializers.CharField(min_length=8, max_length=128, write_only=True)
-#     token = serializers.CharField(max_length=255, read_only=True)
-
-#     def validate(self, data):
-#         username = data.get("username", None)
-#         password = data.get("password", None)
-
-#         if username is None:
-#             raise serializers.ValidationError("An username is required to log in")
-
-#         if password is None:
-#             raise serializers.ValidationError("A password is required to log in.")
-
-#         user = authenticate(username=username, password=password)
-
-#         if user is None:
-#             raise serializers.ValidationError(
-#                 "A user with this username and password was not found."
-#             )
-
-#         return {"username": user.username, "token": user.token}
-
-
 class EmailVerificationSerializer(serializers.ModelSerializer):
     token = serializers.CharField(max_length=256)
 
     class Meta:
         model = Customer
         fields = ["token"]
-
-
-# class CustomerEditSerializer(serializers.ModelSerializer):
-#     password = serializers.CharField(min_length=8, max_length=128, write_only=True)
-
-#     class Meta:
-#         model = Customer
-#         fields = ("email", "password")
-
-#     def update(self, instance, validated_data):
-#         password = validated_data.pop("password", None)
-
-#         for key, value in validated_data.items():
-#             setattr(instance, key, value)
-
-#         if password is not None:
-#             instance.set_password(password)
-
-#         instance.save()
-
-#         return instance
 
 
 class EmailChangeRequestSerializer(serializers.Serializer):
